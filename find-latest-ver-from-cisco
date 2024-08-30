@@ -1,0 +1,31 @@
+#Adem ÖZİPEK
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+#ChromeDriver yolunu gösteriyoruz / Locating ChromeDriver
+cService = webdriver.ChromeService(executable_path = 'chromedriver.exe')
+#Tarayıcı penceresinin otomatik olarak kapanmaması için / To prevent the browser window from closing automatically
+options = webdriver.ChromeOptions()
+options.add_experimental_option("detach", True)
+#Tarayıcıyı çağırıyoruz / Defining browser
+browser = webdriver.Chrome(service = cService, options = options)
+
+#Sayfaya gidiyoruz / Go to the page.
+browser.get("https://software.cisco.com/download/home")
+time.sleep(4)
+#Arama kutusunun XPATH'ini alıp içerisine arama terimini giriyoruz / Getting searchbox XPATH and sending search criteria.
+browser.find_element(By.XPATH, "//*[@id=\"psa-search\"]").send_keys("Nexus 9000 Series")
+time.sleep(1)
+#Arama sonuçları içerisinde seçim yapıyoruz / Make a selection within the search results
+browser.find_element(By.XPATH, "//*[@id=\"ngb-typeahead-0-0\"]/div").click()
+time.sleep(1)
+#İstediğimiz modelin seçimini yapıyoruz / Choosing the model we want
+browser.find_element(By.XPATH, "//*[@id=\"sub-category-list\"]/li[3]/div/span").click()
+time.sleep(1)
+browser.find_element(By.XPATH, "//*[@id=\"stos-list\"]/li[3]/a").click()
+time.sleep(1)
+#Modele ait indirme sayfasında yer alan güncel sürüm bilgisini alıyoruz. / Fetting current version info
+print("Sürüm: " + browser.find_element(By.XPATH, "//*[@id=\"selectedRelease\"]").text)
+time.sleep(10)
+browser.quit()
